@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <main role="main">
+        <div class="jumbotron" style="text-align: center">
+            <h1 class="display-3">Video Display</h1>
+            <p class="lead">You are being recorded lol</p>
+            <video autoplay width="480" height="360"></video>
+            <p><input type="button" id="stopbt" value="STOP" class="btn btn-lg btn-success"/></p>
+        </div>
+        <script type="text/javascript" src="{{ url_for('static', filename='record.js') }}"></script>
+    </main>
+{% endblock %}
