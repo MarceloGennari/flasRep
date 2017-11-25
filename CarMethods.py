@@ -9,7 +9,7 @@ def getsleepstate(res):
     pose = att['headPose']
     print("Roll is %f" % pose["roll"])
     print("Yaw is %f" % pose["yaw"])
-    if pose["roll"] > 4 or pose["yaw"] > 4:
+    if pose["roll"] > 8 or pose["yaw"] > 10:
         sleepstate = "asleep"
         print("YOU ARE ASLEEP - WAKE UP!")
     else:
