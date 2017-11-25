@@ -41,8 +41,8 @@ def video():
         result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
         if result != []:
             sleepstate = getsleepstate(result)
-            print("No face detected")
         else:
+            print("No face detected")
             sleepstate = "unknown"
         return jsonify(sleepstate)
         # em = emoj(result)
