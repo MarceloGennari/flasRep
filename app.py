@@ -29,7 +29,11 @@ def video():
         print("Received")
         image = request.form.get('imgBase64')
         f = open('img.jpg', 'wb')
-        bIm = base64.b64decode(bytes(image, 'utf-8'))
+
+        if sys.version_info[0] == 3:
+            bIm = base64.b64decode(bytes(image, 'utf-8'))
+        if sys.version_info[0] == 2:
+            bIm = base64.b64decode(image)
         f.write(bIm)
         f.close()
 
