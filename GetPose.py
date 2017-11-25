@@ -16,20 +16,41 @@ def getposefromimage(imagefile):
     img_url = imagefile
 
     # only query for the pose attribute, to avoid excessive info/(+delay?)
-    attributes = ('headPose')
+    attributes = ('headPose,occlusion')
 
     check = os.path.isfile('filename')
 
     if not check:
-        result = CF.face.detect(img_url, False, False, attributes=attributes)
-        print(result)
+        result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
+        print("total output is %s" % str(result))
         # extract just the first detected face in the image - how can we be sure that this is the driver?
-        y = result[0]["faceAttributes"]
+        att = result[0]["faceAttributes"]
+        lm = result[0]["faceLandmarks"]
+        print(att)
         # extract just the pose from this
-        pose = {"Pitch": y['headPose']['pitch'], "Roll": y['headPose']['roll'], "Yaw": y['headPose']['yaw']}
-        print("Roll is %d" % pose["Roll"])
+        pose = att['headPose']
+        eye_occ = att['occlusion']['eyeOccluded']
+
+        # "faceLandmarks": {
+        #     "pupilLeft": {
+        #         "x": 412.7,
+        #         "y": 78.4
+        #     },
+        #     "pupilRight": {
+        #         "x": 446.8,
+        #         "y": 74.2
+        #     },
+
+        eye_left = lm['pupilLeft']
+        eye_right = lm['pupilRight']
+        print("left eye co-ords are: x=%f, y=%f" % (eye_left['x'], eye_left['y']))
+        print("right eye co-ords are: x=%f, y=%f" % (eye_right['x'], eye_right['y']))
+        print("Roll is %f" % pose["roll"])
+        print("Yaw is %f" % pose["yaw"])
+        print("Eye occlusion: %s" % eye_occ)
+
 
     return pose
 
-i = 1
+i = 4
 getposefromimage(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep%d.jpg' % i)
