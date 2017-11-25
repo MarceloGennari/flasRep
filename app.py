@@ -8,8 +8,8 @@ import sys
 from lib.Face import Attribute
 from EmojiCreator import emoj
 from CarMethods import getattributes, getsleepstate, getPose
-from serial_python_test import MotorSwitch
-import serial
+#from serial_python_test import MotorSwitch
+#import serial
 
 sys.dont_write_bytecode=True
 
@@ -29,9 +29,15 @@ def index():
 @app.route('/video', methods=['GET', 'POST'])
 def video():
     if request.method=='POST':
+
         print("Received")
         image = request.form.get('imgBase64')
-        f = open('img.jpg', 'wb')
+        k = request.form.get('scnumb')
+        im = 'Data/img'+str(k)+'.jpg'
+
+        print(im)
+
+        f = open(im, 'wb')
 
         if sys.version_info[0] == 3:
             bIm = base64.b64decode(bytes(image, 'utf-8'))
@@ -41,19 +47,16 @@ def video():
         f.close()
 
         #Image URL - Local Image or Online Imaged
-        result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
+        #result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
         if result != []:
             sleepstate = getsleepstate(result)
-<<<<<<< HEAD
             pose = getPose(result)
 
-            if pose["roll"] > 5:
-                MotorSwitch("ON")
-            if pose["roll"] < -5:
-                MotorSwitch("OFF")
+            # if pose["roll"] > 5:
+            #     MotorSwitch("ON")
+            # if pose["roll"] < -5:
+            #     MotorSwitch("OFF")
             
-=======
->>>>>>> a6be8d55d57d793fa2e14c1603b1dc61d13424a2
         else:
             print("No face detected")
             sleepstate = "unknown"

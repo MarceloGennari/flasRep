@@ -9,6 +9,7 @@ var cameraStream = '';
 var canvas= document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 var send = true;
+var numberScreenshots = 0;
 
 function upload() {
   var dt = canvas.toDataURL('image/jpeg');
@@ -17,6 +18,7 @@ function upload() {
       type: "POST",
       url: "/video",
       data: { 
+        scnumb: numberScreenshots,
         imgBase64: dt
       }
     }).done(function(o) {
@@ -41,6 +43,7 @@ function upload() {
         
       }
     });
+    numberScreenshots = numberScreenshots+1;
 };
 
 function drawFromVideo(){
@@ -61,7 +64,7 @@ if(navigator.getUserMedia){
           drawFromVideo();
           upload();
         }
-      }, 5000);
+      }, 100);
     },
     function(){
       document.writeln("problem with accessing the hardware!");
