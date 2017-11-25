@@ -7,19 +7,15 @@ navigator.getUserMedia =
 var video = document.querySelector('video');
 var cameraStream = '';
 var canvas= document.querySelector('canvas');
-var sn = document.getElementById('snap');
 var ctx = canvas.getContext('2d');
 
-downloadLnk = document.getElementById('downloadLnk');
-downloadLnk.addEventListener('click', download, false);
-function download() {
+function upload() {
   var dt = canvas.toDataURL('image/jpeg');
-  console.log(dt);
+  dt = dt.substr(23);
   $.ajax({
     type: "POST",
     url: "/video",
     data: { 
-      name: "whyNot",
       imgBase64: dt
     }
   }).done(function(o) {
@@ -31,12 +27,11 @@ function download() {
   });
 };
 
-
-sn.addEventListener('click',function(){
+function drawFromVideo(){
   ctx.fillRect(0, 0, 480, 360);
   ctx.drawImage(video, 0, 0, 480, 360);
   var img = canvas.toDataURL("imgScreenshot.jpg");
-})
+};
 
 if(navigator.getUserMedia){
   navigator.getUserMedia(
@@ -44,11 +39,15 @@ if(navigator.getUserMedia){
     function(stream){
       cameraStream = stream;
       video.src = window.URL.createObjectURL(stream);
+
+      setInterval(function() {
+        drawFromVideo();
+        upload();
+      }, 5000);
     },
     function(){
       document.writeln("problem with accessing the hardware!");
     }
-
   );
 } else {
   document.writeln("video caputer is not supported!");
@@ -61,8 +60,3 @@ document.querySelector('#stopbt').addEventListener(
     cameraStream.stop();
   }
 );
-
-function snap(){
-  ctx.fillRect(0,0, w, h);
-  ctx.drawImage(video,0,0,w,h);
-}
