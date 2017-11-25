@@ -1,26 +1,21 @@
 from flask import Flask, render_template, request, jsonify
-import cognitive_face as CF
 import base64
 import cognitive_face as CF
 from lib import aux_keys
-import numpy as np
-import pickle
+# import numpy as np
 import os
 import sys
-import pickle
-import emoji
 from lib.Face import Attribute
 from EmojiCreator import emoj
+from CarMethods import getattributes, getsleepstate
 sys.dont_write_bytecode=True
 
 #Setting Cognitive Services
 CF.Key.set(aux_keys.KEY)
 CF.BaseUrl.set(aux_keys.BASE_URL)
 img_url = 'img.jpg'
-attributes = (
-                'age,gender,headPose,smile,facialHair,glasses,emotion,hair,'
-                'makeup,occlusion,accessories,blur,exposure,noise'
-)
+
+attributes = getattributes()
 
 app = Flask(__name__)
 
@@ -39,12 +34,17 @@ def video():
         f.close()
 
         #Image URL - Local Image or Online Imaged
-        result = CF.face.detect(img_url, False, False, attributes=attributes)
-        em = emoj(result)
-        print(result)
-        return jsonify(em)
+        result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
+        if result != []:
+            sleepstate = getsleepstate(result)
+            print("No face detected")
+        else:
+            sleepstate = "unknown"
+        return jsonify(sleepstate)
+        # em = emoj(result)
+        # return jsonify(em)
     else:
         return render_template('video.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

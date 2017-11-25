@@ -43,7 +43,7 @@ if(navigator.getUserMedia){
       setInterval(function() {
         drawFromVideo();
         upload();
-      }, 5000);
+      }, 3000);
     },
     function(){
       document.writeln("problem with accessing the hardware!");
