@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import cognitive_face as CF
 
 """
@@ -19,8 +19,15 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/video')
+@app.route('/video', methods=['GET', 'POST', 'DELETE'])
 def video():
-    return render_template('video.html')
+    if request.method=='POST':
+        print("Received")
+        image = request.get_json()
+        print(image)
+        return render_template('index.html')
+    else:
+        return render_template('video.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
