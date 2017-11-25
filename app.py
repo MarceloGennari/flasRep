@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import cognitive_face as CF
 import base64
 import cognitive_face as CF
@@ -7,7 +7,10 @@ import numpy as np
 import pickle
 import os
 import sys
-
+import pickle
+import emoji
+from lib.Face import Attribute
+from EmojiCreator import emoj
 sys.dont_write_bytecode=True
 
 #Setting Cognitive Services
@@ -37,9 +40,9 @@ def video():
 
         #Image URL - Local Image or Online Imaged
         result = CF.face.detect(img_url, False, False, attributes=attributes)
+        em = emoj(result)
         print(result)
-
-        return render_template('video.html')
+        return jsonify(em)
     else:
         return render_template('video.html')
 

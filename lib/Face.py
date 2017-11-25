@@ -1,7 +1,10 @@
 #Cut down version from the SDK example
 
-import util
+import operator
 
+def key_with_max_value(item):
+    """Get the key with maximum value in a dict."""
+    return max(item.items(), key=operator.itemgetter(1))[0]
 
 class Attribute(object):
     """Attributes for face."""
@@ -26,7 +29,7 @@ class Attribute(object):
         self.facial_hair = sum(attr['facialHair'].values()) > 0 and 'Yes' \
             or 'No'
         self.makeup = any(attr['makeup'].values())
-        self.emotion = util.key_with_max_value(attr['emotion'])
+        self.emotion = key_with_max_value(attr['emotion'])
         self.occlusion = any(attr['occlusion'].values())
         self.exposure = attr['exposure']['exposureLevel']
         self.head_pose = "Pitch: {}, Roll:{}, Yaw:{}".format(
