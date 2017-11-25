@@ -1,18 +1,23 @@
 from flask import Flask, render_template, request
 import cognitive_face as CF
 import base64
+import cognitive_face as CF
+from lib import aux_keys
+import numpy as np
+import pickle
+import os
+import sys
 
-"""
-KEY = '12e644b9-0a69-4bf0-b923-87523be34460'
-CF.Key.set(KEY)
+sys.dont_write_bytecode=True
 
-BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
-CF.BaseUrl.set(BASE_URL)
-
-img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
-result = CF.face.detect(img_url)
-print(result)
-"""
+#Setting Cognitive Services
+CF.Key.set(aux_keys.KEY)
+CF.BaseUrl.set(aux_keys.BASE_URL)
+img_url = 'img.jpg'
+attributes = (
+                'age,gender,headPose,smile,facialHair,glasses,emotion,hair,'
+                'makeup,occlusion,accessories,blur,exposure,noise'
+)
 
 app = Flask(__name__)
 
@@ -29,6 +34,11 @@ def video():
         bIm = base64.b64decode(bytes(image, 'utf-8'))
         f.write(bIm)
         f.close()
+
+        #Image URL - Local Image or Online Imaged
+        result = CF.face.detect(img_url, False, False, attributes=attributes)
+        print(result)
+
         return render_template('video.html')
     else:
         return render_template('video.html')
