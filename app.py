@@ -1,5 +1,10 @@
 from flask import Flask, render_template, request
 import cognitive_face as CF
+import base64
+import os
+import io
+from PIL import Image
+from array import array
 
 """
 KEY = '12e644b9-0a69-4bf0-b923-87523be34460'
@@ -19,12 +24,20 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/video', methods=['GET', 'POST', 'DELETE'])
+@app.route('/video', methods=['POST'])
 def video():
     if request.method=='POST':
         print("Received")
-        image = request.get_json()
-        print(image)
+        image = request.form.get('imgBase64')
+        f = open('img2.jpg', 'wb')
+        #bIm = base64.b64encode(bytes(image, 'utf-8'))
+        bIm = bytearray(image)
+        bImg = Image.open(io.BytesIO(bIm))
+        bImg.save('imageTest.jpg')
+        f.write(bIm)
+        f.close()
+        print(request)
+        print(bIm)
         return render_template('index.html')
     else:
         return render_template('video.html')
