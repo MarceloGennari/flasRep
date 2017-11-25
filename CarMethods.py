@@ -16,3 +16,10 @@ def getsleepstate(res):
         sleepstate = "awake"
         print("You are probably awake...")
     return sleepstate
+
+def getPose(res):
+    att = res[0]["faceAttributes"]
+    lm = res[0]["faceLandmarks"]
+    # extract just relevant things from this
+    pose = att['headPose']
+    return pose
