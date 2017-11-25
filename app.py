@@ -24,7 +24,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/video', methods=['POST'])
+@app.route('/video', methods=['GET', 'POST'])
 def video():
     if request.method=='POST':
         print("Received")
@@ -38,7 +38,7 @@ def video():
         f.close()
         print(request)
         print(bIm)
-        return render_template('index.html')
+        return render_template('video.html')
     else:
         return render_template('video.html')
 
