@@ -7,7 +7,10 @@ import os
 import sys
 from lib.Face import Attribute
 from EmojiCreator import emoj
-from CarMethods import getattributes, getsleepstate
+from CarMethods import getattributes, getsleepstate, getPose
+from serial_python_test import MotorSwitch
+import serial
+
 sys.dont_write_bytecode=True
 
 #Setting Cognitive Services
@@ -41,10 +44,20 @@ def video():
         result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
         if result != []:
             sleepstate = getsleepstate(result)
-            print("No face detected")
+            pose = getPose(result)
+
+            if pose["roll"] > 5:
+                MotorSwitch("ON")
+            if pose["roll"] < -5:
+                MotorSwitch("OFF")
+            
         else:
             sleepstate = "unknown"
+            print("No face detected")
+        
+
         return jsonify(sleepstate)
+
         # em = emoj(result)
         # return jsonify(em)
     else:
