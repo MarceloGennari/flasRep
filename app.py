@@ -29,15 +29,9 @@ def index():
 @app.route('/video', methods=['GET', 'POST'])
 def video():
     if request.method=='POST':
-
         print("Received")
         image = request.form.get('imgBase64')
-        k = request.form.get('scnumb')
-        im = 'Data/img'+str(k)+'.jpg'
-
-        print(im)
-
-        f = open(im, 'wb')
+        f = open('img.jpg', 'wb')
 
         if sys.version_info[0] == 3:
             bIm = base64.b64decode(bytes(image, 'utf-8'))
@@ -47,7 +41,7 @@ def video():
         f.close()
 
         #Image URL - Local Image or Online Imaged
-        #result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
+        result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
         if result != []:
             sleepstate = getsleepstate(result)
             pose = getPose(result)

@@ -64,7 +64,7 @@ if(navigator.getUserMedia){
           drawFromVideo();
           upload();
         }
-      }, 100);
+      }, 3000);
     },
     function(){
       document.writeln("problem with accessing the hardware!");
