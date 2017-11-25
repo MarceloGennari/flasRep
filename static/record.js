@@ -19,11 +19,18 @@ function upload() {
       imgBase64: dt
     }
   }).done(function(o) {
-    console.log('saved'); 
-    // If you want the file to be visible in the browser 
-    // - please modify the callback in javascript. All you
-    // need is to return the url to the file, you just saved 
-    // and than put the image in your browser.
+    console.log('saved');
+    console.log(o);
+    $('#output').html(o);
+    if(o==":)"){
+      $('#idCan').css("border", "5px solid green");
+    }
+    if(o==":/"){
+      $('#idCan').css("border", "5px solid white");
+    }
+    if(o==":("){
+      $('#idCan').css("border", "5px solid red");
+    }
   });
 };
 
