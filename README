@@ -1,0 +1,60 @@
+This is a readme on the file structure and how to use the folders
+
+##################################
+General folder description:
+
+app - contains the python flask implementations. Each page has its own .py for clarity
+app/static - put images and stuff here (like .js files) that needs to be accessed in the html
+app/templates - html files that handle the user interface. The bootstrapping is done in layout.html
+
+lib - library containing all the extra functions required by the .py implementations to work. Put excess files that are
+    not flask python pages here
+data - folder that contains misc. data such as the arial font needed to write to images. Contains the Marcelo data set
+   as well
+faces - similar to above but more legacy. Was used to store pickle files of stored data to prevent repeated API
+    calling
+old_test - Legacy functions and code used to ensure functionality before using them in the main project. Many would not
+    work now unless paths are edited.
+
+##################################
+General page description:
+app/index.py - standard landing page for the webserver
+app/video.py - implementation of emotion API writing onto images
+app/sleep.py - implementation of speech detection using custom image classification of sleep vs non-sleep
+app/hardware.py - implementation of faceapi to control external hardware. This only works locally due to port access
+    with arduino!
+
+Extras:
+app/aboutus.py - General team description
+app/disclaimer.py - General disclaimer - The team claims no responsibility for anything resulting from use of this code
+app/contactus.py - General email address for discussion and further info.
+
+#################################
+TO DO:
+lib/aux_speak.py - Contains a working implementation of Bing Text to Speech API. The output is saved in a file given by
+    the first function field and the text to be spoken is given as a string in the second field.
+    USE THIS TO DO SOMETHING COOL! :)
+Remove the right image from most pages to replace them with more cool stuff
+
+##################################
+Additional information:
+
+The steps for creating a new page are:
+
+1) Write a .py file in the folder app
+2) Include the file in app.__init__/py
+3) Create a .html file in app/templates
+4) Modify app/templates/includes._navbar.html to include your new page
+
+All extra pages with a .py must have 'from app import app' in order to function!
+
+##################################
+Additional quirks:
+
+lib/aux_keys.py - contains all the Microsoft API keys, these keys will be deactivated after the hackathon so please
+    provide your own here
+app/__init__.py - app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 prevents browser caching. This is important during the
+    prototyping process
+
+
+
