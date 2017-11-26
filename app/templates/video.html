@@ -10,7 +10,6 @@
             <img src = "static/sample-out.jpg?342038402" width ="480" height="360" id="img">
             <p><input type="button" id="stopbt" value="STOP" class="btn btn-lg btn-success"/></p>
             <p id="output"></p>
-            <audio controls><source src="static/audios/Sad1.mp3"></audio> 
         </div>
         <script type="text/javascript" src="{{ url_for('static', filename='record_emotion.js') }}"></script>
         <script>
@@ -24,8 +23,6 @@
             setInterval(updateImage, 3000);
         }
         </script>
-
-        
 
     </main>
 {% endblock %}
