@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import serial
-import syslog
+#import syslog
 import time
 import sys
 # For the motor 

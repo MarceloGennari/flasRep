@@ -8,8 +8,8 @@ import sys
 from lib.Face import Attribute
 from EmojiCreator import emoj
 from CarMethods import getattributes, getsleepstate, getPose
-from serial_python_test import MotorSwitch
-import serial
+#from serial_python_test import MotorSwitch
+#import serial
 
 sys.dont_write_bytecode=True
 
@@ -48,6 +48,7 @@ def video():
             roll = pose["roll"]
             print("the roll of the pose is: %d",roll)
             MotorSwitch(roll)
+
         else:
             print("No face detected")
             sleepstate = "unknown"

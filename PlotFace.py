@@ -3,6 +3,8 @@ from lib import aux_keys
 import os
 import sys
 import matplotlib
+import math
+import time
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 sys.dont_write_bytecode=True
@@ -24,10 +26,10 @@ def plotface(imagefile):
 
     if not check:
         result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
-        print("total output is %s" % str(result))
+        # print("total output is %s" % str(result))
         # extract just the first detected face in the image - how can we be sure that this is the driver?
         lm = result[0]["faceLandmarks"]
-
+        bb = result[0]['faceRectangle']
         # extract all facial features
         i = lm["pupilLeft"]
         n = lm["pupilRight"]
@@ -57,6 +59,14 @@ def plotface(imagefile):
         aa = lm["underLipTop"]
         ab = lm["underLipBottom"]
 
+        # ---- CALCULATE EYE AREAS ----
+        leftap = eyearea(e,f,g,h)
+        # rightap = eyearea(j,k,l,m)
+        print("left aperture is %f" % leftap)
+
+        # ---- PLOT THE FACE OVER THE IMAGE ----
+        img = plt.imread(imagefile)
+        plt.imshow(img)
         # left eyebrow
         plt.plot([a['x'], b['x']], [a['y'], b['y']], 'b')
         # right eyebrow
@@ -76,11 +86,102 @@ def plotface(imagefile):
         # nose centre & pupils
         plt.plot([i['x'], n['x'], u['x']], [i['y'], n['y'], u['y']], 'bo')
 
+        # plot bounding box
+        top = bb['top']
+        left = bb['left']
+        right = left + bb['width']
+        bottom = top + bb['height']
+        plt.plot([left, right, right, left, left], [top, top, bottom, bottom, top], 'r')
 
         plt.axis('equal')
         plt.show()
 
 
+def eyearea(a,b,c,d):
+    ac = {'x':(a['x']-c['x']), 'y':(a['y']-c['y'])}
+    bd = {'x':(b['x']-d['x']), 'y':(b['y']-d['y'])}
+    length_ac = math.sqrt((ac['x'])**2+(ac['y'])**2)
+    length_bd = math.sqrt((bd['x'])**2+(bd['y'])**2)
+    # print(str(length_ac) + "," + str(length_bd))
+    area = 0.5*length_ac*length_bd
+    return area
+
+
+def eyelength(a,c):
+    ac = {'x':(a['x']-c['x']), 'y':(a['y']-c['y'])}
+    length_ac = math.sqrt((ac['x'])**2+(ac['y'])**2)
+    return length_ac
+
+
+# REALLY I SHOULD BE MAKING FOR MORE USE OF THE OOP PARADIGM
+def ims2aperture(imagefile):
+    #Setting Cognitive Services
+    CF.Key.set(aux_keys.KEY)
+    CF.BaseUrl.set(aux_keys.BASE_URL)
+
+    #Image URL - Local Image or Online Imaged
+    for ii in 0:50
+    img_url = imagefile
+
+    # only query for the pose attribute, to avoid excessive info/(+delay?)
+    attributes = ('headPose')
+
+    check = os.path.isfile('filename')
+
+    if not check:
+        result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
+        # print("total output is %s" % str(result))
+        # extract just the first detected face in the image - how can we be sure that this is the driver?
+        lm = result[0]["faceLandmarks"]
+        bb = result[0]['faceRectangle']
+        # extract all facial features
+        i = lm["pupilLeft"]
+        n = lm["pupilRight"]
+        u = lm["noseTip"]
+        v = lm["mouthLeft"]
+        y = lm["mouthRight"]
+        a = lm["eyebrowLeftOuter"]
+        b = lm["eyebrowLeftInner"]
+        e = lm["eyeLeftOuter"]
+        f = lm["eyeLeftTop"]
+        h = lm["eyeLeftBottom"]
+        g = lm["eyeLeftInner"]
+        c = lm["eyebrowRightInner"]
+        d = lm["eyebrowRightOuter"]
+        j = lm["eyeRightInner"]
+        k = lm["eyeRightTop"]
+        m = lm["eyeRightBottom"]
+        l = lm["eyeRightOuter"]
+        o = lm["noseRootLeft"]
+        r = lm["noseRootRight"]
+        p = lm["noseLeftAlarTop"]
+        s = lm["noseRightAlarTop"]
+        q = lm["noseLeftAlarOutTip"]
+        t = lm["noseRightAlarOutTip"]
+        w = lm["upperLipTop"]
+        z = lm["upperLipBottom"]
+        aa = lm["underLipTop"]
+        ab = lm["underLipBottom"]
+
+        # get bounding box values
+        top = bb['top']
+        left = bb['left']
+        right = left + bb['width']
+        bottom = top + bb['height']
+
+        # --- GET EYE AREAS ---
+        lefteyearea = eyearea(e,g)
+        righteyearea = eyearea(j,l)
+        # --- GET EYE LENGTHS ---
+        lefteyelength = eyelength(e, f, g, h)
+        righteyelength = eyelength(j, k, l, m)
+
+
+        # sleep for 0.1 seconds to not break Microsoft API rules
+        time.sleep(0.1)
+
+        eye_info = {'leftarea':lefteyearea,'rightarea':righteyearea,'leftlength':lefteyelength,'rightlength':righteyelength}
+        return eye_info
 ii = 4
-plotface(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep%d.jpg' % ii)
-plotface()
+# plotface(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep%d.jpg' % ii)
+ims2aperture(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep4.jpg')
