@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, Response
 from app import app
 import requests
 import cognitive_face as CF
@@ -6,6 +6,7 @@ import sys
 from lib.usefulutil import getattributes, getsleepstate, getPose, getSleep
 import base64
 from lib import aux_keys, aux_speak
+import json
 
 isArduino = False
 
@@ -43,7 +44,7 @@ def hardware():
             roll = pose["roll"]
             print("the roll of the pose is: %d",roll)
             roll_str = str(round(roll, 2))
-            aux_speak.converttowav('roll', ' ' + roll_str)
+            aux_speak.converttowav('AudiosAngles/roll'+str(roll_str), ' ' + roll_str )
 
             if(isArduino):
                 MotorSwitch(roll)
@@ -51,7 +52,8 @@ def hardware():
             print("No face detected")
             sleepstate = "unknown"
 
-        return jsonify(sleepstate)
+        js = [{"sleep": sleepstate, "roll": roll_str}]
+        return Response(json.dumps(js), mimetype='application/json')
         # em = emoj(result)
         # return jsonify(em)
     else:

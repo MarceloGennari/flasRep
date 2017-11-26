@@ -23,14 +23,13 @@ function upload() {
       }
     }).done(function(o) {
       console.log('saved');
-      console.log(o);
+      console.log(o[0]);
       $('#output').html(o);
 
-        if(o!="unknown"){
-        $('#aud').attr("src", 'static/audios/roll.wav');
+        if(o[0].sleep!="unknown"){
+        $('#aud').attr("src", 'static/audios/AudiosAngles/roll'+o[0].roll.toString()+'.wav');
         $('#aud').get(0).load();
         $('#aud').get(0).play();
-        $('#aud').attr("src", '');
         }
       }
     );
@@ -55,7 +54,7 @@ if(navigator.getUserMedia){
           drawFromVideo();
           upload();
         }
-      }, 3000);
+      }, 7000);
     },
     function(){
       document.writeln("Problem accessing the camera, please check your permissions");
