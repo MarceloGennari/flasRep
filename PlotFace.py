@@ -120,7 +120,6 @@ def ims2aperture(imagefile):
     CF.BaseUrl.set(aux_keys.BASE_URL)
 
     #Image URL - Local Image or Online Imaged
-    for ii in 0:50
     img_url = imagefile
 
     # only query for the pose attribute, to avoid excessive info/(+delay?)
@@ -132,56 +131,62 @@ def ims2aperture(imagefile):
         result = CF.face.detect(img_url, face_id=False, landmarks=True, attributes=attributes)
         # print("total output is %s" % str(result))
         # extract just the first detected face in the image - how can we be sure that this is the driver?
-        lm = result[0]["faceLandmarks"]
-        bb = result[0]['faceRectangle']
-        # extract all facial features
-        i = lm["pupilLeft"]
-        n = lm["pupilRight"]
-        u = lm["noseTip"]
-        v = lm["mouthLeft"]
-        y = lm["mouthRight"]
-        a = lm["eyebrowLeftOuter"]
-        b = lm["eyebrowLeftInner"]
-        e = lm["eyeLeftOuter"]
-        f = lm["eyeLeftTop"]
-        h = lm["eyeLeftBottom"]
-        g = lm["eyeLeftInner"]
-        c = lm["eyebrowRightInner"]
-        d = lm["eyebrowRightOuter"]
-        j = lm["eyeRightInner"]
-        k = lm["eyeRightTop"]
-        m = lm["eyeRightBottom"]
-        l = lm["eyeRightOuter"]
-        o = lm["noseRootLeft"]
-        r = lm["noseRootRight"]
-        p = lm["noseLeftAlarTop"]
-        s = lm["noseRightAlarTop"]
-        q = lm["noseLeftAlarOutTip"]
-        t = lm["noseRightAlarOutTip"]
-        w = lm["upperLipTop"]
-        z = lm["upperLipBottom"]
-        aa = lm["underLipTop"]
-        ab = lm["underLipBottom"]
+        if result == []:
+            eye_info = 0
+            Face = False
+            return eye_info, Face
+        else:
+            Face = True
+            lm = result[0]["faceLandmarks"]
+            bb = result[0]['faceRectangle']
 
-        # get bounding box values
-        top = bb['top']
-        left = bb['left']
-        right = left + bb['width']
-        bottom = top + bb['height']
+            # extract all facial features
+            i = lm["pupilLeft"]
+            n = lm["pupilRight"]
+            u = lm["noseTip"]
+            v = lm["mouthLeft"]
+            y = lm["mouthRight"]
+            a = lm["eyebrowLeftOuter"]
+            b = lm["eyebrowLeftInner"]
+            e = lm["eyeLeftOuter"]
+            f = lm["eyeLeftTop"]
+            h = lm["eyeLeftBottom"]
+            g = lm["eyeLeftInner"]
+            c = lm["eyebrowRightInner"]
+            d = lm["eyebrowRightOuter"]
+            j = lm["eyeRightInner"]
+            k = lm["eyeRightTop"]
+            m = lm["eyeRightBottom"]
+            l = lm["eyeRightOuter"]
+            o = lm["noseRootLeft"]
+            r = lm["noseRootRight"]
+            p = lm["noseLeftAlarTop"]
+            s = lm["noseRightAlarTop"]
+            q = lm["noseLeftAlarOutTip"]
+            t = lm["noseRightAlarOutTip"]
+            w = lm["upperLipTop"]
+            z = lm["upperLipBottom"]
+            aa = lm["underLipTop"]
+            ab = lm["underLipBottom"]
 
-        # --- GET EYE AREAS ---
-        lefteyearea = eyearea(e,g)
-        righteyearea = eyearea(j,l)
-        # --- GET EYE LENGTHS ---
-        lefteyelength = eyelength(e, f, g, h)
-        righteyelength = eyelength(j, k, l, m)
+            # get bounding box values
+            top = bb['top']
+            left = bb['left']
+            right = left + bb['width']
+            bottom = top + bb['height']
+
+            # --- GET EYE AREAS ---
+            lefteyearea = eyearea(e, f, g, h)
+            righteyearea = eyearea(j, k, l, m)
+            # --- GET EYE LENGTHS ---
+            lefteyelength = eyelength(e, g)
+            righteyelength = eyelength(j, l)
 
 
-        # sleep for 0.1 seconds to not break Microsoft API rules
-        time.sleep(0.1)
+            # sleep for 0.1 seconds to not break Microsoft API rules
+            time.sleep(0.1)
 
-        eye_info = {'leftarea':lefteyearea,'rightarea':righteyearea,'leftlength':lefteyelength,'rightlength':righteyelength}
-        return eye_info
-ii = 4
-# plotface(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep%d.jpg' % ii)
-ims2aperture(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep4.jpg')
+            eye_info = {'leftarea':lefteyearea,'rightarea':righteyearea,'leftlength':lefteyelength,'rightlength':righteyelength}
+            return eye_info, Face
+#
+# ims2aperture(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep4.jpg')
