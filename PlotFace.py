@@ -189,4 +189,6 @@ def ims2aperture(imagefile):
             eye_info = {'leftarea':lefteyearea,'rightarea':righteyearea,'leftlength':lefteyelength,'rightlength':righteyelength}
             return eye_info, Face
 #
+
+plotface(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep4.jpg')
 # ims2aperture(imagefile = '/Users/Bibby/Desktop/hackathon_images/sleep4.jpg')

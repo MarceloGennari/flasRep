@@ -43,8 +43,8 @@ for d in eye_list:
     rightareas.append(d['rightarea'])
     leftlengths.append(d['leftlength'])
     rightlengths.append(d['rightlength'])
-    normlarea = d['leftarea']/d['leftlength']
-    normrarea = d['rightarea']/d['rightlength']
+    normlarea = d['leftarea']/d['leftlength']**2
+    normrarea = d['rightarea']/d['rightlength']**2
     normalisedleftareas.append(normlarea)
     normalisedrightareas.append(normrarea)
 
