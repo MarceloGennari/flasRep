@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, Response
 from app import app
 import requests
 import sys
@@ -6,6 +6,7 @@ import base64
 from lib.usefulutil import getSleep
 import base64
 from lib import aux_keys
+import json
 
 CV_KEY = aux_keys.CUSTOM_VISION_KEY
 CV_URL = aux_keys.CUSTOM_VISION_URL
@@ -33,6 +34,8 @@ def sleep():
         if result != []:
             sleepstate = getSleep(result)
             print(sleepstate)
-        return jsonify(sleepstate)
+
+        js = [{"sleep": sleepstate, "state": True}]
+        return Response(json.dumps(js), mimetype='application/json')
     else:
         return render_template('sleep.html')

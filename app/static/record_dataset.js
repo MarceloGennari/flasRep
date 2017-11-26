@@ -16,18 +16,18 @@ function upload() {
   dt = dt.substr(23);
     $.ajax({
       type: "POST",
-      url: "/sleep",
+      url: "/datagen",
       data: { 
         scnumb: numberScreenshots,
         imgBase64: dt
       }
     }).done(function(o) {
-      console.log(o[0]);
-      $('#output').html(o[0].sleep);
-      if(o[0].sleep=="awake"){
+      console.log(o);
+      $('#output').html(o);
+      if(o=="awake"){
         $('#idCan').css("border", "5px solid green");
       }
-      if(o[0].sleep=="awake"){
+      if(o=="awake"){
         $('#idCan').css("border", "5px solid red");
         $('#aud').attr("src", 'static/audios/test1.wav');
         $('#aud').get(0).load();
@@ -55,7 +55,7 @@ if(navigator.getUserMedia){
           drawFromVideo();
           upload();
         }
-      }, 4000);
+      }, 500);
     },
     function(){
       document.writeln("Problem accessing the camera, please check your permissions");
