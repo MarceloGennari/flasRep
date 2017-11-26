@@ -6,7 +6,8 @@
             <h1 class="display-3">Emotion Write</h1>
             <p class="lead">How are you feeling today?</p>
             <video autoplay width="480" height="360"></video>
-            <canvas id="idCan" width="480" height="360"></canvas>
+            <canvas id="idCan" width="480" height="360" style="display: none"></canvas>
+            <img src = "static/sample-out.jpg?342038402" width ="480" height="360" id="img">
             <p><input type="button" id="stopbt" value="STOP" class="btn btn-lg btn-success"/></p>
             <p id="output"></p>
             <audio controls><source src="static/audios/Sad1.mp3"></audio> 
@@ -24,7 +25,7 @@
         }
         </script>
 
-        <img src = "static/sample-out.jpg?342038402", id="img">
+        
 
     </main>
 {% endblock %}
