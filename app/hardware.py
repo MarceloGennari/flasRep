@@ -5,7 +5,7 @@ import cognitive_face as CF
 import sys
 from lib.usefulutil import getattributes, getsleepstate, getPose, getSleep
 import base64
-from lib import aux_keys
+from lib import aux_keys, aux_speak
 
 isArduino = False
 
@@ -14,7 +14,7 @@ if(isArduino):
     from lib.serial_python_test import MotorSwitch
     import serial
 
-img_url = 'img.jpg'
+img_url = 'app/img.jpg'
 
 #Setting Cognitive Services
 CF.Key.set(aux_keys.KEY)
@@ -26,7 +26,7 @@ def hardware():
     if request.method=='POST':
         print("Received")
         image = request.form.get('imgBase64')
-        f = open('img.jpg', 'wb')
+        f = open(img_url, 'wb')
 
         if sys.version_info[0] == 3:
             bIm = base64.b64decode(bytes(image, 'utf-8'))
@@ -42,9 +42,11 @@ def hardware():
             pose = getPose(result)
             roll = pose["roll"]
             print("the roll of the pose is: %d",roll)
+            roll_str = str(round(roll, 2))
+            aux_speak.converttowav('roll', ' ' + roll_str)
+
             if(isArduino):
                 MotorSwitch(roll)
-
         else:
             print("No face detected")
             sleepstate = "unknown"

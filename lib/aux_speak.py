@@ -5,7 +5,10 @@ import sys
 sys.dont_write_bytecode=True
 import wave
 
+
 # Write a .wav file based on the text input string and the file name string
+
+
 def converttowav(filename, text):
     key = aux_keys.BING_KEY
     params = ""
@@ -42,7 +45,7 @@ def converttowav(filename, text):
     data = response.read()
     conn.close()
 
-    wavfile = wave.open('data/'+filename+'.wav', 'wb')
+    wavfile = wave.open('app/static/audios/'+filename+'.wav', 'wb')
     wavfile.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
     wavfile.writeframes(data)
     wavfile.close()

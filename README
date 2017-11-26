@@ -46,7 +46,7 @@ The steps for creating a new page are:
 3) Create a .html file in app/templates
 4) Modify app/templates/includes._navbar.html to include your new page
 
-All extra pages with a .py must have 'from app import app' in order to function!
+All extra pages with a .py must have 'from app import app' in order to function
 
 ##################################
 Additional quirks:
@@ -57,4 +57,4 @@ app/__init__.py - app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 prevents browser c
     prototyping process
 
 
-
+##################################
