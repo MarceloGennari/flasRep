@@ -5,6 +5,7 @@ import time
 import sys
 # For the motor 
 port = '/dev/cu.usbmodem14311'
+
 ser = serial.Serial(port, 9600)
 
 def MotorSwitch(state):

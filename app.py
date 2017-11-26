@@ -8,8 +8,14 @@ import sys
 from lib.Face import Attribute
 from EmojiCreator import emoj
 from CarMethods import getattributes, getsleepstate, getPose
-#from serial_python_test import MotorSwitch
-#import serial
+
+isArduino = False
+
+if(isArduino):
+    from serial_python_test import MotorSwitch
+
+# NOTICE: If serial doesn't work, then you have to pip install pyserial, NOT pip install serial!!!!!
+import serial
 
 sys.dont_write_bytecode=True
 
@@ -47,7 +53,8 @@ def video():
             pose = getPose(result)
             roll = pose["roll"]
             print("the roll of the pose is: %d",roll)
-            MotorSwitch(roll)
+            if(isArduino):
+                MotorSwitch(roll)
 
         else:
             print("No face detected")
