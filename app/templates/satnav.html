@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <main role="main">
+        <div class="jumbotron" style="text-align: center">
+            <h1 class="display-3">Satnav Intefacing</h1>
+            <p class="lead">The Most Annoying Satnav</p>
+            <video autoplay width="480" height="360"></video>
+            <canvas id="idCan" width="480" height="360"></canvas>
+            <p><input type="button" id="stopbt" value="STOP" class="btn btn-lg btn-success"/></p>
+            <p id="output"></p>
+            <audio id="aud" style="display: none"></audio>
+        </div>
+        <script type="text/javascript" src="{{ url_for('static', filename='record_satnav.js') }}"></script>
+    </main>
+{% endblock %}

@@ -50,7 +50,7 @@ def video():
             # draw.text((x, y),"Sample Text",(r,g,b))
             draw.text((120, 80), "I'm Feeling " + x, (255, 255, 255), font=font)
             img.save('app/static/sample-out.jpg')
-
+            print(result)
         else:
             print("No face detected")
         return jsonify(result)
